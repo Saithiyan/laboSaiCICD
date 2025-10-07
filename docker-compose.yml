@@ -1,0 +1,29 @@
+services:
+  MySQL:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: root
+      MYSQL_PASSWORD: poseidon
+      MYSQL_ROOT_PASSWORD: poseidon
+    volumes:
+      - db_data:/var/lib/mysql
+
+  Wordpress:
+    image: wordpress:latest
+    ports:
+      -"8080:80"
+    environment:
+      WORDPRESS_DB_HOST: MySQL:3306
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: poseidon
+      WORDPRESS_DB_NAME: wordpress
+    depends_on:
+      - db
+
+  Adminer:
+    image: adminer
+    ports:
+      - "8081:8080"
+volumes:
+  db_data:
